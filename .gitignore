@@ -2,13 +2,13 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-/[Bb]uilds/
-/[Ll]ogs/
-/[Uu]ser[Ss]ettings/
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -70,3 +70,55 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+.fake
+
+# Ignore Perforce files and folders
+.p4config
+.p4ignore
+.p4tickets
+.p4s
+.p4settings
+.p4tickets
+.p4trust
+.P4Settings
+
+# Ignore Perforce workspace files
+*.p4
+
+# Ignore Perforce meta files
+*.meta
+*.orig
+
+# Ignore Perforce lock files
+*.lock
+
+# Ignore Perforce log files
+*.log
+*.db
+*.db-journal
+
+# Ignore Perforce thumbnail cache
+Thumbs.db
+
+# Ignore Perforce's temporary folders
+[P4]
+[P4]_temp
+
+# Ignore Perforce workspace backups
+*.bak
+*.swp
+*.swo
+
+# Ignore Perforce's hidden folders
+.p4genii
+.P4Root
+
+# Ignore Perforce's undo files
+*.[0-9].p4
+
+# Ignore Perforce's service files
+*.s
+
+# Ignore Perforce's db.* files
+db.*
