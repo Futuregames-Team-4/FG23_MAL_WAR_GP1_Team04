@@ -906,6 +906,7 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   pauseText: {fileID: 1277850673033051953}
   controlsText: {fileID: 900451112717517539}
+  playerMovement: {fileID: 0}
 --- !u!1 &4570377697439947564
 GameObject:
   m_ObjectHideFlags: 0

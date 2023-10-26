@@ -5,7 +5,6 @@ public class GridSystem : MonoBehaviour
 {
     public float cellSize = 1;
     public float spacing = 0.25f;
-
     public Transform[,] grid; // matrice bidimensionale che rappresenta la griglia
     public int gridSizeX { get; private set; }
     public int gridSizeY { get; private set; }

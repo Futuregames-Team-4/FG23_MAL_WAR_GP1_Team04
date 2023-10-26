@@ -10,8 +10,7 @@ public class NewEnemyPathfinding : MonoBehaviour
     public PlayerMovement player;
 
     public bool shouldFollowPlayer = false;
-    public int enemyMoves = 2; // Default to 3 moves per turn, but you can change this value in the Unity editor.
-
+    public int enemyMoves = 1; // Default to 3 moves per turn, but you can change this value in the Unity editor.
 
     void Start()
     {
@@ -27,7 +26,6 @@ public class NewEnemyPathfinding : MonoBehaviour
             shouldFollowPlayer = false;  // Reset the value to avoid continuously invoking FindPathToPlayer
         }
     }
-
 
     public void FindPathToPlayer(Vector2Int playerPos)
     {
@@ -84,21 +82,6 @@ public class NewEnemyPathfinding : MonoBehaviour
         return neighbors;
     }
 
-
-
-    private void AddNeighborIfValid(List<Vector2Int> neighbors, Vector2Int potentialNeighbor)
-    {
-        if (IsValidGridPosition(potentialNeighbor) && !gridSystem.occupiedGrid[potentialNeighbor.x, potentialNeighbor.y])
-        {
-            neighbors.Add(potentialNeighbor);
-        }
-    }
-
-    private bool IsValidGridPosition(Vector2Int pos)
-    {
-        return pos.x >= 0 && pos.x < gridSystem.gridSizeX && pos.y >= 0 && pos.y < gridSystem.gridSizeY;
-    }
-
     private bool IsValidDestination(Vector2Int gridPosition)
     {
         if (gridPosition.x < 0 || gridPosition.y < 0 || gridPosition.x >= gridSystem.gridSizeX || gridPosition.y >= gridSystem.gridSizeY)
@@ -132,11 +115,10 @@ public class NewEnemyPathfinding : MonoBehaviour
         StartCoroutine(FollowPath());
     }
 
-
-
     IEnumerator FollowPath()
     {
         int movesThisTurn = Mathf.Min(path.Count, enemyMoves+1); // Limit the moves to either the path length or enemyMoves, +1 because so it works.
+        Debug.Log("Attempting to move to an invalid position: ");
 
         for (int i = 0; i < movesThisTurn; i++)
         {

@@ -24,6 +24,9 @@ public class InGameMenu : MonoBehaviour
     [SerializeField]
     GameObject controlsText;
 
+    [SerializeField]
+    PlayerMovement playerMovement;
+
     bool isPaused = false;
 
     private void Awake()
@@ -81,6 +84,7 @@ public class InGameMenu : MonoBehaviour
         overviewCamera.SetActive(true);
         mapOverview.SetActive(true);
         mainCamera.SetActive(false);
+        playerMovement.enabled = false;
     }
 
     void RemoveOverviewMap()
@@ -88,5 +92,6 @@ public class InGameMenu : MonoBehaviour
         overviewCamera.SetActive(false);
         mapOverview.SetActive(false);
         mainCamera.SetActive(true);
+        playerMovement.enabled = true;
     }
 }
