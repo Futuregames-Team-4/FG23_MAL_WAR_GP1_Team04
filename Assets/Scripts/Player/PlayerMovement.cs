@@ -8,10 +8,14 @@ public class PlayerMovement : MonoBehaviour
     public bool useActionPoints = true;         // Enable or disale ActionPoints
     private RaycastHit hitInfo;
     private GridSystem gridSystem;
+    public PlayerStats playerStats;
+
+
 
     private void Start()
     {
         gridSystem = FindObjectOfType<GridSystem>();
+        playerStats = GetComponent<PlayerStats>();
         currentActionPoints = maxActionPoints;
     }
 
@@ -91,14 +95,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void ConsumeActionPoint()   // Decrease actionPoints
     {
-        if (useActionPoints)
+        playerStats.ConsumeActionPoint();
+        if (playerStats.currentActionPoints <= 0)
         {
-            currentActionPoints--;
-
-            if (currentActionPoints <= 0)
-            {
-                GameStateManager.Instance.EndPlayerTurn();
-            }
+            GameStateManager.Instance.EndPlayerTurn();
         }
     }
 }

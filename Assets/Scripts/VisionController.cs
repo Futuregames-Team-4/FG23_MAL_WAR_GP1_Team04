@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class VisionController : MonoBehaviour
 {
-    FuelConsumption fuel;
     Light lanternLight;
     CapsuleCollider capsuleTrigger;
+    private PlayerStats playerStats;
 
     private void Awake()
     {
-        fuel = GetComponent<FuelConsumption>();
+        playerStats = GetComponent<PlayerStats>();
         lanternLight = GetComponentInChildren<Light>();
         capsuleTrigger = GetComponent<CapsuleCollider>();
     }
 
     private void Update()
     {
-        switch (fuel.fuel)
+        switch (playerStats.fuel)
         {
             case 0: 
                 lanternLight.range = 0.5f;

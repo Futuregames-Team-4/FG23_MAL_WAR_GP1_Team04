@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311924, g: 0.38073963, b: 0.3587269, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1655,6 +1655,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4101190256182839574, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1972877599}
+    - targetCorrespondingSourceObject: {fileID: 4101190256182839574, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1972877605}
+    - targetCorrespondingSourceObject: {fileID: 2907545180780641161, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 256105396}
   m_SourcePrefab: {fileID: 100100000, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
 --- !u!114 &193285791 stripped
 MonoBehaviour:
@@ -1975,6 +1981,34 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64094a174db344fe3ab582d84c330c33, type: 3}
+--- !u!1 &256105394 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2907545180780641161, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
+  m_PrefabInstance: {fileID: 193285790}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &256105396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256105394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &274570440
 GameObject:
   m_ObjectHideFlags: 0
@@ -11522,6 +11556,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56ed93de7fcad0d4f8f629afeca3b40a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1972877605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1972877593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815e2c4e309759e4f9e5d1ef56951de2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxActionPoints: 3
+  currentActionPoints: 0
+  fuel: 10
 --- !u!1001 &1974471818
 PrefabInstance:
   m_ObjectHideFlags: 0
