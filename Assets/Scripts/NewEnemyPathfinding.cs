@@ -8,7 +8,6 @@ public class NewEnemyPathfinding : MonoBehaviour
     private List<Vector2Int> path;
     private Vector2Int playerPos;
     public PlayerMovement player;
-
     public bool shouldFollowPlayer = false;
     public int enemyMoves = 1; // Default to 3 moves per turn, but you can change this value in the Unity editor.
 
@@ -21,11 +20,11 @@ public class NewEnemyPathfinding : MonoBehaviour
     {
         if (shouldFollowPlayer)
         {
-            Vector2Int playerGridPosition = gridSystem.GetGridPosition(player.transform.position - gridSystem.transform.position);
-            FindPathToPlayer(playerGridPosition);
-            shouldFollowPlayer = false;  // Reset the value to avoid continuously invoking FindPathToPlayer
+            FindPathToPlayer(player.CurrentGridPosition);
+            shouldFollowPlayer = false;
         }
     }
+
 
     public void FindPathToPlayer(Vector2Int playerPos)
     {
@@ -33,6 +32,7 @@ public class NewEnemyPathfinding : MonoBehaviour
 
         this.playerPos = playerPos;
         Vector2Int startPos = gridSystem.GetGridPosition(transform.position);
+        Debug.Log(startPos);
         Queue<Vector2Int> queue = new Queue<Vector2Int>();
         Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
 
@@ -40,16 +40,19 @@ public class NewEnemyPathfinding : MonoBehaviour
         while (queue.Count > 0)
         {
             Vector2Int current = queue.Dequeue();
+            Debug.Log(current);
             if (current == startPos)
             {
+                Debug.Log("Finding the path");
                 CreatePath(cameFrom);
                 return;
             }
-
+           
             foreach (Vector2Int neighbor in GetNeighbors(current))
             {
                 if (!cameFrom.ContainsKey(neighbor) && !visited.Contains(neighbor))
                 {
+                    Debug.Log("Finding the path");
                     queue.Enqueue(neighbor);
                     cameFrom[neighbor] = current;
                     visited.Add(neighbor);
@@ -103,6 +106,7 @@ public class NewEnemyPathfinding : MonoBehaviour
 
     private void CreatePath(Dictionary<Vector2Int, Vector2Int> cameFrom)
     {
+        Debug.Log("Trovando il path");
         Vector2Int current = gridSystem.GetGridPosition(transform.position);
         List<Vector2Int> reversedPath = new List<Vector2Int>();
 
@@ -117,6 +121,7 @@ public class NewEnemyPathfinding : MonoBehaviour
 
     IEnumerator FollowPath()
     {
+        Debug.Log("Seguo il nemico");
         int movesThisTurn = Mathf.Min(path.Count, enemyMoves+1); // Limit the moves to either the path length or enemyMoves, +1 because so it works.
         Debug.Log("Attempting to move to an invalid position: ");
 

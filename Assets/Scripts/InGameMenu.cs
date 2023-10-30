@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class InGameMenu : MonoBehaviour
 {
+    //[SerializeField]
+    //GameStateManager gameStateManager;
+
     [SerializeField]
     GameObject pauseMenu;
 
@@ -27,12 +30,36 @@ public class InGameMenu : MonoBehaviour
     [SerializeField]
     PlayerMovement playerMovement;
 
+    [SerializeField]
+    GameObject attackSprite;
+
+    [SerializeField]
+    GameObject skipTurnButton;
+
+    [SerializeField]
+    GameObject battleScene;
+
+    [SerializeField]
+    FuelConsumption fuelConsumption;
+
+    [SerializeField]
+    GameObject inventory;
+
+
     bool isPaused = false;
 
     private void Awake()
     {
+        attackSprite.SetActive(false);
         pauseMenu.SetActive(false);
         controlsText.SetActive(false);
+        skipTurnButton.SetActive(false);
+        battleScene.SetActive(false);
+    }
+
+    private void Start()
+    {
+        RegularSizedInventory();
     }
 
     private void Update()
@@ -93,5 +120,59 @@ public class InGameMenu : MonoBehaviour
         mapOverview.SetActive(false);
         mainCamera.SetActive(true);
         playerMovement.enabled = true;
+    }
+
+    public IEnumerator AttackedSpriteEnable()
+    {
+        attackSprite.SetActive(true);
+        yield return new WaitForSeconds(2);
+        attackSprite.SetActive(false);
+    }
+
+    public void ActivateSkipButton()
+    {
+        skipTurnButton.SetActive(true);
+    }
+
+    public void DeactivateSkipButton()
+    {
+        skipTurnButton.SetActive(false);
+    }
+
+    public void EnemyMoves()
+    {
+        //play sound
+        Debug.Log("Enemy moving sound");
+    }
+
+    public void StartBattle()
+    {
+        playerMovement.enabled = false;
+        battleScene.SetActive(true);
+        inventory.transform.localPosition = new Vector3(0f, 400f, 0f);
+        inventory.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
+    }
+
+    public void FleeButton()
+    {
+        EndBattle();
+        fuelConsumption.HitByEnemy();
+        StartCoroutine(AttackedSpriteEnable());
+    }
+
+    public void EndBattle()
+    {
+        if (!playerMovement.enabled)
+        {
+            playerMovement.enabled = true;
+        }
+        battleScene.SetActive(false);
+        RegularSizedInventory();
+    }
+
+    void RegularSizedInventory()
+    {
+        inventory.transform.localPosition = new Vector3(0f, 0f, 0f);
+        inventory.transform.localScale = new Vector3(1f, 1f, 1f);
     }
 }

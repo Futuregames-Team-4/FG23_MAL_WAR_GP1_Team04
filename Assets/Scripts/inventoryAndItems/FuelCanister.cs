@@ -7,6 +7,7 @@ public class FuelCanister : MonoBehaviour
     public void FuelRefill()
     {
         //gameObject.GetComponent<FuelConsumption>().UseConsumable();
+        // Do not use
     }
 
     void Update()

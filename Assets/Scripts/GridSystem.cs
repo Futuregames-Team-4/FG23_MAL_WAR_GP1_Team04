@@ -17,6 +17,12 @@ public class GridSystem : MonoBehaviour
     private void Start()
     {
         bottomLeftSquare = GetBottomLeftSquare();
+        if (bottomLeftSquare == null)
+        {
+            Debug.LogError("No bottom left square found!");
+            return; // esce dal metodo Start
+        }
+
         if (bottomLeftSquare != null)
         {
             // Set cellSize based on the scale of the detected square
@@ -55,7 +61,6 @@ public class GridSystem : MonoBehaviour
         foreach (var square in squares)
         {
             Vector2Int gridPos = GetGridPositionWithoutOffset(square.transform.position); // Usiamo una versione modificata di GetGridPosition 
-
             maxX = Mathf.Max(maxX, gridPos.x);
             maxY = Mathf.Max(maxY, gridPos.y);
             minX = Mathf.Min(minX, gridPos.x);
@@ -92,7 +97,7 @@ public class GridSystem : MonoBehaviour
 
     }
 
-    private Transform GetBottomLeftSquare()
+    public Transform GetBottomLeftSquare()
     {
         SquareStatus[] squares = FindObjectsOfType<SquareStatus>();
         if (squares.Length == 0) return null;
@@ -111,6 +116,10 @@ public class GridSystem : MonoBehaviour
 
     public Vector2Int GetGridPositionWithoutOffset(Vector3 worldPosition)
     {
+        if (bottomLeftSquare == null)
+        {
+            bottomLeftSquare = GetBottomLeftSquare();
+        }
         Vector3 relativePosition = worldPosition - bottomLeftSquare.position;
         int x = Mathf.FloorToInt(relativePosition.x / (cellSize + spacing));
         int y = Mathf.FloorToInt((relativePosition.z - 2 * (cellSize + spacing)) / (cellSize + spacing));

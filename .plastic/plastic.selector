@@ -1,0 +1,4 @@
+repository "FG23_MAL_WAR_GP1_Team04_1@arystotelos@cloud"
+  path "/"
+    br "/main"
+    co "/main"

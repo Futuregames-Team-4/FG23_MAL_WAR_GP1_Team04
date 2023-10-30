@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DebugTools;
 
-
 public class GameStateManager : MonoBehaviour
 {
     public enum GameState
@@ -17,8 +16,11 @@ public class GameStateManager : MonoBehaviour
 
     public GameState CurrentState { get; private set; } = GameState.Start;
 
-    [SerializeField] private PlayerMovement player;
-    [SerializeField] private NewEnemyPathfinding enemy;
+    public PlayerStats player;
+    public NewEnemyPathfinding enemy;
+    public InGameMenu inGameMenu;
+    private bool isEnemyActivated = false;  // variabile per tenere traccia dello stato di attivazione del nemico
+
 
     private void OnEnable()
     {
@@ -30,10 +32,20 @@ public class GameStateManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    public void EnemyActivated()
+    {
+        isEnemyActivated = true;
+    }
+
+    public void EnemyDeactivated()
+    {
+        isEnemyActivated = false;
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // Update references when a new scene is loaded
-        player = FindObjectOfType<PlayerMovement>();
+        player = FindObjectOfType<PlayerStats>();
         enemy = FindObjectOfType<NewEnemyPathfinding>();
     }
 
@@ -49,20 +61,7 @@ public class GameStateManager : MonoBehaviour
             Destroy(gameObject);            // Destroy any other instances that get created in new scenes
             return;
         }
-
-        if (CurrentState != GameState.Start) // Assuming Start state corresponds to the menu
-        {
-            player = FindObjectOfType<PlayerMovement>();
-            enemy = FindObjectOfType<NewEnemyPathfinding>();
-            StartPlayerTurn(); //
-        }
-    }
-
-    private void Start()
-    {
-        CurrentState = GameState.Start;
-        player = FindObjectOfType<PlayerMovement>();
-        enemy = FindObjectOfType<NewEnemyPathfinding>();
+        StartPlayerTurn();
     }
 
     private void Update()
@@ -70,7 +69,7 @@ public class GameStateManager : MonoBehaviour
         switch (CurrentState)
         {
             case GameState.PlayerTurn:
-                if (PlayerMovement.currentActionPoints <= 0)
+                if (player.useActionPoints && player.currentActionPoints <= 0)
                 {
                     EndPlayerTurn();
                 }
@@ -90,31 +89,36 @@ public class GameStateManager : MonoBehaviour
 
     public void StartPlayerTurn()
     {
-        if (player && !player.enabled)
+        Debug.Log("PlayerTurn");
+        CurrentState = GameState.PlayerTurn;
+        //player.enabled = true;
+        if (player.useActionPoints)
         {
-            CurrentState = GameState.PlayerTurn;
-            player.enabled = true;
-            player.useActionPoints = true; // Enable player input
-            PlayerMovement.currentActionPoints = player.maxActionPoints;
+            inGameMenu.ActivateSkipButton();
+            player.currentActionPoints = player.maxActionPoints;
         }
-        
+
     }
 
     public void EndPlayerTurn()
     {
-        if (player && player.enabled)
+        inGameMenu.DeactivateSkipButton();
+        player.ConsumeFuel(1);
+        if (!isEnemyActivated)
         {
-            player.useActionPoints = false; // Disable player input
-            player.enabled = false;
+            StartPlayerTurn();
+        }
+        else 
+        {
             StartEnemyTurn();
         }
     }
 
     public void StartEnemyTurn()
     {
+        Debug.Log("Enemy Turn");
         if (enemy)
         {
-            int playerCurrentActionPoints = PlayerMovement.currentActionPoints;
             CurrentState = GameState.EnemyTurn;
             if (!enemy.enabled)
             {
@@ -123,6 +127,7 @@ public class GameStateManager : MonoBehaviour
             }
             else
             {
+                inGameMenu.EnemyMoves();
                 enemy.shouldFollowPlayer = true; // This will make the enemy calculate the path and start following the player
             }
         }
@@ -132,7 +137,6 @@ public class GameStateManager : MonoBehaviour
     {
         if (enemy)
         {
-            CurrentState = GameState.PlayerTurn;
             StartPlayerTurn(); // Start the player's turn again
         }
     }

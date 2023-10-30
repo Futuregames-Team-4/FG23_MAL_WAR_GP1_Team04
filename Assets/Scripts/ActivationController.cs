@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class ActivationController : MonoBehaviour
 {
-    private GameStateManager gameStateManager;  // Game Manager
+    public PlayerStats player;
     
     [SerializeField]
     GameObject objectToActivate;
 
     public NewEnemyPathfinding scriptComponent;
+    public GameStateManager gameStateManager;
+
+    public void Cloack1()
+    {
+        GetComponent<ActivationController>().enabled = false;
+    }
 
     void Awake()
     {
@@ -25,6 +31,8 @@ public class ActivationController : MonoBehaviour
         {
             objectToActivate.SetActive(true);
             scriptComponent.enabled = true; // Enables the NewEnemyPathfinding script
+            player.useActionPoints = true;  // Enable the Turn-Based System
+            gameStateManager.EnemyActivated(); // Notify GameStateManager
         }
     }
 
@@ -34,6 +42,7 @@ public class ActivationController : MonoBehaviour
         {
             objectToActivate.SetActive(false);
             scriptComponent.enabled = false; // Disables the NewEnemyPathfinding script
+            gameStateManager.EnemyDeactivated(); // Notify GameStateManager
         }
     }
 }

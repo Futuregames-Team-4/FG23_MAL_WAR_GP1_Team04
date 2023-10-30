@@ -2,21 +2,19 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public int maxActionPoints = 3;
-    public static int currentActionPoints;
     public bool mouseDebug = false;             // Show Raycast of the mouse
-    public bool useActionPoints = true;         // Enable or disale ActionPoints
     private RaycastHit hitInfo;
     private GridSystem gridSystem;
     public PlayerStats playerStats;
-
+    private GameStateManager gameStateManager;
+    public Vector2Int CurrentGridPosition { get; private set; }
 
 
     private void Start()
     {
+        gameStateManager = GetComponent<GameStateManager>();
         gridSystem = FindObjectOfType<GridSystem>();
         playerStats = GetComponent<PlayerStats>();
-        currentActionPoints = maxActionPoints;
     }
 
 
@@ -39,9 +37,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMouseInput()         // Input of the mouse
     {
-        if (useActionPoints && currentActionPoints <= 0) return;
         if (Input.GetMouseButtonDown(0) && hitInfo.collider != null && 
-        IsValidMove(hitInfo.collider.transform.position) && currentActionPoints > 0)
+        IsValidMove(hitInfo.collider.transform.position) && playerStats.currentActionPoints > 0)
         {
             SquareStatus squareStatus = hitInfo.collider.GetComponent<SquareStatus>();
             if (squareStatus != null && !squareStatus.isOccupied)
@@ -87,18 +84,21 @@ public class PlayerMovement : MonoBehaviour
         {
             occupier.MoveToSquare(targetPosition);
         }
+
         // Update GridStatus
         Vector2Int previousPos = gridSystem.GetGridPosition(transform.position);
         Vector2Int newPos = gridSystem.GetGridPosition(targetPosition);
 
+        // Aggiorna la proprietà con la nuova posizione
+        CurrentGridPosition = newPos;
     }
 
-    private void ConsumeActionPoint()   // Decrease actionPoints
+
+    public void ConsumeActionPoint()
     {
-        playerStats.ConsumeActionPoint();
-        if (playerStats.currentActionPoints <= 0)
+        if (playerStats.useActionPoints && playerStats.currentActionPoints > 0)
         {
-            GameStateManager.Instance.EndPlayerTurn();
+            playerStats.currentActionPoints--;
         }
     }
 }

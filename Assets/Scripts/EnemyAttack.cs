@@ -12,6 +12,12 @@ public class EnemyAttack : MonoBehaviour
 
     private bool hasAttacked = false; // Flag to track whether an attack has already occurred
 
+    [SerializeField] InGameMenu inGameMenu;
+
+    public void Cloack()
+    {
+        GetComponent<EnemyAttack>().enabled = false;
+    }
     void Update()
     {
         bool playerCollisionDetected = false;
@@ -50,15 +56,21 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
-    void AttackPlayer(Collider player)
+    public void AttackPlayer(Collider player)
     {
         if (!hasAttacked) // Check if an attack has not already occurred
         {
             Debug.Log("You are hit!");
+            inGameMenu.StartBattle();
+
             // Apply damage to the player (you can modify this part)
-            FuelConsumption fuel = player.transform.parent.GetComponent<FuelConsumption>();
-            fuel.HitByEnemy();
+            //FuelConsumption fuel = player.transform.parent.GetComponent<FuelConsumption>();
+            //fuel.HitByEnemy();
+            //StartCoroutine(inGameMenu.AttackedSpriteEnable());
             hasAttacked = true; // Set the flag to true after attacking
         }
     }
+
+    
+
 }
