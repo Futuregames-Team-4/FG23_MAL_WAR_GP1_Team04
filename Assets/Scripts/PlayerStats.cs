@@ -29,4 +29,15 @@ public class PlayerStats : MonoBehaviour
         fuel = Mathf.Min(fuel + amount, amountToRefill);
     }
 
+    public void ConsumeActionPoint()
+    {
+        if (useActionPoints && currentActionPoints > 0)
+        {
+            currentActionPoints--;
+        } else 
+        {
+            return;
+        }
+    }
+
 }

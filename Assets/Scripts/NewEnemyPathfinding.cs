@@ -20,6 +20,7 @@ public class NewEnemyPathfinding : MonoBehaviour
     {
         if (shouldFollowPlayer)
         {
+            Debug.Log("Posso muovermi");
             FindPathToPlayer(player.CurrentGridPosition);
             shouldFollowPlayer = false;
         }
@@ -28,11 +29,11 @@ public class NewEnemyPathfinding : MonoBehaviour
 
     public void FindPathToPlayer(Vector2Int playerPos)
     {
+        Debug.Log("Comincio la funzione");
         HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
 
         this.playerPos = playerPos;
         Vector2Int startPos = gridSystem.GetGridPosition(transform.position);
-        Debug.Log(startPos);
         Queue<Vector2Int> queue = new Queue<Vector2Int>();
         Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
 
@@ -40,10 +41,9 @@ public class NewEnemyPathfinding : MonoBehaviour
         while (queue.Count > 0)
         {
             Vector2Int current = queue.Dequeue();
-            Debug.Log(current);
             if (current == startPos)
             {
-                Debug.Log("Finding the path");
+                Debug.Log("OK");
                 CreatePath(cameFrom);
                 return;
             }
@@ -52,7 +52,6 @@ public class NewEnemyPathfinding : MonoBehaviour
             {
                 if (!cameFrom.ContainsKey(neighbor) && !visited.Contains(neighbor))
                 {
-                    Debug.Log("Finding the path");
                     queue.Enqueue(neighbor);
                     cameFrom[neighbor] = current;
                     visited.Add(neighbor);
@@ -106,7 +105,7 @@ public class NewEnemyPathfinding : MonoBehaviour
 
     private void CreatePath(Dictionary<Vector2Int, Vector2Int> cameFrom)
     {
-        Debug.Log("Trovando il path");
+        Debug.Log("Sto trovando il path");
         Vector2Int current = gridSystem.GetGridPosition(transform.position);
         List<Vector2Int> reversedPath = new List<Vector2Int>();
 
@@ -121,9 +120,8 @@ public class NewEnemyPathfinding : MonoBehaviour
 
     IEnumerator FollowPath()
     {
-        Debug.Log("Seguo il nemico");
+        Debug.Log("Path trovato, seguo il giocatore");
         int movesThisTurn = Mathf.Min(path.Count, enemyMoves+1); // Limit the moves to either the path length or enemyMoves, +1 because so it works.
-        Debug.Log("Attempting to move to an invalid position: ");
 
         for (int i = 0; i < movesThisTurn; i++)
         {
@@ -149,8 +147,38 @@ public class NewEnemyPathfinding : MonoBehaviour
                 yield return null;
             }
             yield return new WaitForSeconds(0.5f); // puoi cambiare la durata dell'attesa per far muovere il nemico più velocemente o lentamente
+            TryAttackPlayer();
         }
         GameStateManager.Instance.EndEnemyTurn();
     }
+
+    private void TryAttackPlayer()
+    {
+        int rayCount = 8;
+        float spreadAngle = 360.0f;
+        float attackRange = 2.0f;
+        int playerLayerMask = 1 << LayerMask.NameToLayer("Box Collider");
+
+        for (int i = 0; i < rayCount; i++)
+        {
+            float angle = (i / (float)rayCount) * spreadAngle - (spreadAngle / 2.0f);
+            Vector3 rayDirection = Quaternion.Euler(0, angle, 0) * transform.forward;
+
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, rayDirection, out hit, attackRange, playerLayerMask))
+            {
+                if (hit.collider.CompareTag("Player"))
+                {
+                    EnemyAttack enemyAttackComponent = GetComponent<EnemyAttack>();
+                    if (enemyAttackComponent != null)
+                    {
+                        enemyAttackComponent.AttackPlayer(hit.collider);
+                    }
+                    return; // Esce dal ciclo, dato che vogliamo attaccare solo una volta.
+                }
+            }
+        }
+    }
+
 
 }

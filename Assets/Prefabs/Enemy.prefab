@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 5194817663049290853}
   - component: {fileID: -690422947417045019}
   - component: {fileID: 4058570180602200674}
-  - component: {fileID: 7056790991697835106}
+  - component: {fileID: 3668685288871794465}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,7 +103,7 @@ MonoBehaviour:
   player: {fileID: 0}
   shouldFollowPlayer: 0
   enemyMoves: 1
---- !u!114 &7056790991697835106
+--- !u!114 &3668685288871794465
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,14 +115,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f598ac59c0010f041aee62d70c79e3a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 1.75
+  attackRange: 2.75
   attackDamage: 1
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
   rayCount: 8
   spreadAngle: 360
-  inGameMenu: {fileID: 0}
+  inGameMenu: {fileID: 2429741217696756156, guid: cb4f8f58675900c4fb18e429b135bc67, type: 3}
 --- !u!1001 &3817561640274529288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -149,7 +149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 12a7d0da014e8444c944f61464c68140, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.17
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 12a7d0da014e8444c944f61464c68140, type: 3}
       propertyPath: m_LocalPosition.z

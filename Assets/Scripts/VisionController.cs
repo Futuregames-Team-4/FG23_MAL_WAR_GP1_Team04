@@ -7,12 +7,34 @@ public class VisionController : MonoBehaviour
     PlayerStats playerStats;
     Light lanternLight;
     CapsuleCollider capsuleTrigger;
+    GameStateManager gameStateManager;
 
     private void Awake()
     {
-        playerStats = GetComponent<PlayerStats>();
+        playerStats = FindObjectOfType<PlayerStats>();
         lanternLight = GetComponentInChildren<Light>();
         capsuleTrigger = GetComponent<CapsuleCollider>();
+        gameStateManager = FindObjectOfType<GameStateManager>();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            gameStateManager.SetEnemyVisibility(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            gameStateManager.SetEnemyVisibility(false);
+            if (gameStateManager.CurrentState == GameStateManager.GameState.EnemyTurn)
+            {
+                gameStateManager.EndEnemyTurn();  // If the enemy is in its turn and goes out of sight, end its turn.
+            }
+        }
     }
 
     private void Update()

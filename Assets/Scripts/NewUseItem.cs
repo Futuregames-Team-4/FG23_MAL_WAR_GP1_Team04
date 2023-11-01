@@ -4,57 +4,97 @@ using UnityEngine;
 
 public class NewUseItem : MonoBehaviour
 {
-    [SerializeField] GameObject objectToInactivate;
-    [SerializeField] GameObject objectToInactivate1;
-    [SerializeField] GameObject objectToInactivate2;
-    [SerializeField] GameObject objectToInactivate3;
+    [SerializeField] GameObject fuel;
+    [SerializeField] GameObject flare;
+    [SerializeField] GameObject shield;
+    [SerializeField] GameObject cloack;
     [SerializeField] GameObject reveal;
     [SerializeField] InGameMenu inGameMenu;
-    public EnemyAttack enemy;
-    PlayerStats playerStats;
+    public EnemyAttack enemyAttack;
+    public NewEnemyPathfinding enemy;
+    PlayerStats player;
+    public int cloackTurns = 4;
+    public int currentCloackTurns = 0;
+    public float ShieldTime = 10;
+    public int shieldTurns = 1;
+    public int currentShieldTurns = 0;
+    public bool hasKey = false;
 
     private void Start()
     {
-        playerStats = GetComponent<PlayerStats>();
+        player = GetComponent<PlayerStats>();
     }
-    public void UseItem1()
+    public void FuelRefil()
     {
-        //fuel = transform.GetComponent<FuelConsumption>();
-        Debug.Log("PICK UP MF");
-        playerStats.Refuel(playerStats.amountToRefill);
-        inGameMenu.EndBattle();
-        objectToInactivate.SetActive(false);
+        if (player.currentActionPoints > 0)
+        {
+            player.Refuel(player.amountToRefill);
+            inGameMenu.EndBattle();
+            fuel.SetActive(false);
+            player.ConsumeActionPoint();
+        } else
+        {
+            Debug.Log("Not enough actionPoints to activate Cloack");
+        }
     }
-    public void UseItem2()
+    public void Flare()
     {
-        StartCoroutine(DelayAction());
-        inGameMenu.EndBattle();
-        objectToInactivate1.SetActive(false);
-    }
-    public void UseItem3()
-    {
-        inGameMenu.EndBattle();
-        objectToInactivate2.SetActive(false);
-    }
-    public void UseItem4()
-    {
-        enemy.Cloack();
-        inGameMenu.EndBattle();
-        objectToInactivate3.SetActive(false);
+        if (player.currentActionPoints > 0)
+        {
+            StartCoroutine(DelayAction());
+            inGameMenu.EndBattle();
+            flare.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("Not enough actionPoints to activate Cloack");
+        }
         
+    }
+    public void Shield()
+    {
+        if (player.currentActionPoints > 0)
+        {
+            Debug.Log("Shield has been Activated");
+            currentShieldTurns = shieldTurns;
+            inGameMenu.EndBattle();
+            enemyAttack.enabled = false;
+            shield.SetActive(false);
+            player.ConsumeActionPoint();
+        }
+        else
+        {
+            Debug.Log("Not enough actionPoints to activate Cloack");
+        }
+        
+    }
+    public void Cloack()
+    {
+        if (player.currentActionPoints > 0)
+        {
+            Debug.Log("Cloack Activated");
+            currentCloackTurns = cloackTurns;
+
+            inGameMenu.EndBattle();
+            enemy.enabled = false;
+            cloack.SetActive(false);
+            player.ConsumeActionPoint();
+        } else
+        {
+            Debug.Log("Not enough actionPoints to activate Cloack");
+        }
+    }
+    public void Key()
+    {
+        hasKey = true;
     }
 
     private IEnumerator DelayAction()
     {
         reveal.transform.position = new Vector3(-1.85000002f, 2.11999989f, -3.8900001f);
-
-
         Debug.Log("Flash THE WORLD");
         yield return new WaitForSeconds(3f);
         reveal.transform.position = new Vector3(-100.5f, -0.150000036f, -6.25f);
         Debug.Log("do something");
-
-
-        // You can add any action you want to perform after the delay here
     }
 }

@@ -121,15 +121,22 @@ public class GridSystem : MonoBehaviour
             bottomLeftSquare = GetBottomLeftSquare();
         }
         Vector3 relativePosition = worldPosition - bottomLeftSquare.position;
-        int x = Mathf.FloorToInt(relativePosition.x / (cellSize + spacing));
-        int y = Mathf.FloorToInt((relativePosition.z - 2 * (cellSize + spacing)) / (cellSize + spacing));
+
+        // Arrotonda i calcoli per evitare decimali piccolissimi
+        int x = Mathf.RoundToInt(relativePosition.x / (cellSize + spacing));
+        int y = Mathf.RoundToInt((relativePosition.z - 2 * (cellSize + spacing)) / (cellSize + spacing));
 
         return new Vector2Int(x, y);
     }
 
     public Vector3 GetWorldPosition(Vector2Int gridPosition)
     {
-        return new Vector3(gridPosition.x * (cellSize + spacing), 0, gridPosition.y * (cellSize + spacing)) + bottomLeftSquare.position;
+        // Arrotonda i calcoli per evitare decimali piccolissimi
+        float x = Mathf.Round(gridPosition.x * (cellSize + spacing) + bottomLeftSquare.position.x);
+        float y = 0; // Altezza rimane la stessa
+        float z = Mathf.Round(gridPosition.y * (cellSize + spacing) + bottomLeftSquare.position.z);
+
+        return new Vector3(x, y, z);
     }
 
     public Vector2Int GetGridPosition(Vector3 worldPosition)
@@ -137,6 +144,7 @@ public class GridSystem : MonoBehaviour
         Vector2Int posWithoutOffset = GetGridPositionWithoutOffset(worldPosition);
         return posWithoutOffset - new Vector2Int(offsetX, offsetY);
     }
+
 
     void OnDrawGizmos()
     {

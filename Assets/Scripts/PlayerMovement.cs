@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
             if (squareStatus != null && !squareStatus.isOccupied)
             {
                 MoveTo(hitInfo.collider.transform.position);
-                ConsumeActionPoint();
+                playerStats.ConsumeActionPoint();
             }
         }
     }
@@ -91,14 +91,5 @@ public class PlayerMovement : MonoBehaviour
 
         // Aggiorna la proprietà con la nuova posizione
         CurrentGridPosition = newPos;
-    }
-
-
-    public void ConsumeActionPoint()
-    {
-        if (playerStats.useActionPoints && playerStats.currentActionPoints > 0)
-        {
-            playerStats.currentActionPoints--;
-        }
     }
 }

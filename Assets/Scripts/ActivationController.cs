@@ -12,9 +12,18 @@ public class ActivationController : MonoBehaviour
     public NewEnemyPathfinding scriptComponent;
     public GameStateManager gameStateManager;
 
-    public void Cloack1()
+    public void Start()
+    {
+        this.gameObject.SetActive(true);
+    }
+
+    public void DisableEnemy()
     {
         GetComponent<ActivationController>().enabled = false;
+    }
+
+    public void EnableEnemy() {
+        GetComponent<ActivationController>().enabled = true;
     }
 
     void Awake()

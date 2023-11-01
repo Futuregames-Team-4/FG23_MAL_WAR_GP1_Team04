@@ -141,13 +141,11 @@ public class InGameMenu : MonoBehaviour
 
     public void EnemyMoves()
     {
-        //play sound
-        Debug.Log("Enemy moving sound");
+        //play enemy sound
     }
 
     public void StartBattle()
     {
-        playerMovement.enabled = false;
         battleScene.SetActive(true);
         inventory.transform.localPosition = new Vector3(0f, 400f, 0f);
         inventory.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);

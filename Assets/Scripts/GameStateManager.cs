@@ -18,9 +18,15 @@ public class GameStateManager : MonoBehaviour
 
     public PlayerStats player;
     public NewEnemyPathfinding enemy;
+    public NewUseItem item;
     public InGameMenu inGameMenu;
     private bool isEnemyActivated = false;  // variabile per tenere traccia dello stato di attivazione del nemico
+    public bool isEnemyVisible = true;  // variabile per controllare se il nemico è visibile
 
+    public void SetEnemyVisibility(bool visibility)
+    {
+        isEnemyVisible = visibility;
+    }
 
     private void OnEnable()
     {
@@ -47,6 +53,7 @@ public class GameStateManager : MonoBehaviour
         // Update references when a new scene is loaded
         player = FindObjectOfType<PlayerStats>();
         enemy = FindObjectOfType<NewEnemyPathfinding>();
+        item = FindObjectOfType<NewUseItem>();
     }
 
     private void Awake()
@@ -98,6 +105,28 @@ public class GameStateManager : MonoBehaviour
             player.currentActionPoints = player.maxActionPoints;
         }
 
+        // Cloack Turns
+        if (item.currentCloackTurns > 0)
+        {
+            item.currentCloackTurns --;
+            if (item.currentCloackTurns == 0)
+            {
+                enemy.enabled = true;
+                Debug.Log("Cloack is Down, Enemy can spot you!");
+            }
+        }
+
+        // Shield Turns
+        if (item.currentShieldTurns > 0)
+        {
+            item.currentShieldTurns--;
+            if (item.currentShieldTurns == 0)
+            {
+                item.enemyAttack.enabled = true;
+                Debug.Log("Shield Down, Enemy can attack you!");
+            }
+        }
+
     }
 
     public void EndPlayerTurn()
@@ -117,19 +146,20 @@ public class GameStateManager : MonoBehaviour
     public void StartEnemyTurn()
     {
         Debug.Log("Enemy Turn");
-        if (enemy)
+        if (!isEnemyVisible)
+        {
+            EndEnemyTurn();
+            return;
+        }
+
+        if (enemy && enemy.gameObject.activeInHierarchy)
         {
             CurrentState = GameState.EnemyTurn;
-            if (!enemy.enabled)
-            {
-                EndEnemyTurn();
-                return;
-            }
-            else
-            {
-                inGameMenu.EnemyMoves();
-                enemy.shouldFollowPlayer = true; // This will make the enemy calculate the path and start following the player
-            }
+            enemy.shouldFollowPlayer = true; // This will make the enemy calculate the path and start following the player
+        }
+        else
+        {
+            EndEnemyTurn();  // If enemy is not there, then end the enemy's turn.
         }
     }
 
