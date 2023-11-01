@@ -3853,6 +3853,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 577231147}
     - target: {fileID: 104440270459874997, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 179865375}
+    - target: {fileID: 104440270459874997, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
       propertyPath: flare
       value: 
       objectReference: {fileID: 955033035}
@@ -3876,6 +3880,10 @@ PrefabInstance:
       propertyPath: battleScene
       value: 
       objectReference: {fileID: 1860162793}
+    - target: {fileID: 104440270459874997, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
+      propertyPath: enemyAttack
+      value: 
+      objectReference: {fileID: 1677835924}
     - target: {fileID: 1444742711276519904, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
       propertyPath: playerStats
       value: 
@@ -27528,6 +27536,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4482056806954026683, guid: 29c570431e1d49145b336b1a71a666ff, type: 3}
   m_PrefabInstance: {fileID: 2003368343}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1677835924 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3668685288871794465, guid: 501952118b1506a4082d21361253f66b, type: 3}
+  m_PrefabInstance: {fileID: 2088981875}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f598ac59c0010f041aee62d70c79e3a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1679013208
 PrefabInstance:
   m_ObjectHideFlags: 0
