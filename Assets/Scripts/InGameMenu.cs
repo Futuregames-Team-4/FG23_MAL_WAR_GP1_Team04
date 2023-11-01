@@ -45,6 +45,12 @@ public class InGameMenu : MonoBehaviour
     [SerializeField]
     GameObject inventory;
 
+    [SerializeField]
+    PlayerStats playerStats;
+
+    [SerializeField]
+    MusicSelector musicSelector;
+
 
     bool isPaused = false;
 
@@ -139,6 +145,11 @@ public class InGameMenu : MonoBehaviour
         skipTurnButton.SetActive(false);
     }
 
+    public void SkipTurnButton()
+    {
+        playerStats.ConsumeActionPoint();
+    }
+
     public void EnemyMoves()
     {
         //play enemy sound
@@ -146,9 +157,10 @@ public class InGameMenu : MonoBehaviour
 
     public void StartBattle()
     {
+        musicSelector.PlayBattleMusic();
         battleScene.SetActive(true);
-        inventory.transform.localPosition = new Vector3(0f, 400f, 0f);
-        inventory.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
+        //inventory.transform.localPosition = new Vector3(0f, 400f, 0f);
+        //inventory.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
     }
 
     public void FleeButton()
@@ -160,6 +172,7 @@ public class InGameMenu : MonoBehaviour
 
     public void EndBattle()
     {
+        musicSelector.PlayInGameMusic();
         if (!playerMovement.enabled)
         {
             playerMovement.enabled = true;

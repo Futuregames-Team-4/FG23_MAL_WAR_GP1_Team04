@@ -2,17 +2,22 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DebugTools;
 
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using DebugTools;
+
 public class GameStateManager : MonoBehaviour
 {
     public enum GameState
     {
-        Start,     // Show Main Menu
-        PlayerTurn,   // Player's turn
-        EnemyTurn, // Enemy's turn
-        Paused,    // Show the Pause Menu
-        End         // Game Over or Victory
+        Start,
+        PlayerTurn,
+        EnemyTurn,
+        Paused,
+        End
     }
-    public static GameStateManager Instance; // Singleton reference
+
+    public static GameStateManager Instance;
 
     public GameState CurrentState { get; private set; } = GameState.Start;
 
@@ -20,103 +25,93 @@ public class GameStateManager : MonoBehaviour
     public NewEnemyPathfinding enemy;
     public NewUseItem item;
     public InGameMenu inGameMenu;
-    private bool isEnemyActivated = false;  // variabile per tenere traccia dello stato di attivazione del nemico
-    public bool isEnemyVisible = true;  // variabile per controllare se il nemico è visibile
+    public ActivationController activationController;
 
-    public void SetEnemyVisibility(bool visibility)
-    {
-        isEnemyVisible = visibility;
-    }
+    private bool isEnemyActivated = false;
+    public bool isEnemyVisible = true;
 
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
+    #region Unity Methods
 
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
+    private void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
 
-    public void EnemyActivated()
-    {
-        isEnemyActivated = true;
-    }
+    private void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
 
-    public void EnemyDeactivated()
-    {
-        isEnemyActivated = false;
-    }
+    private void Awake() => InitializeSingleton();
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        // Update references when a new scene is loaded
-        player = FindObjectOfType<PlayerStats>();
-        enemy = FindObjectOfType<NewEnemyPathfinding>();
-        item = FindObjectOfType<NewUseItem>();
-    }
+    private void Update() => HandleGameStateUpdate();
 
-    private void Awake()
+    #endregion
+
+    public void SetEnemyVisibility(bool visibility) => isEnemyVisible = visibility;
+
+    public void EnemyActivated() => isEnemyActivated = true;
+
+    public void EnemyDeactivated() => isEnemyActivated = false;
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) => UpdateReferences();
+
+    private void InitializeSingleton()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);  // Keeps this object alive across scene changes
+            DontDestroyOnLoad(gameObject);
         }
         else if (Instance != this)
         {
-            Destroy(gameObject);            // Destroy any other instances that get created in new scenes
-            return;
+            Destroy(gameObject);
         }
+
         StartPlayerTurn();
     }
 
-    private void Update()
+    private void HandleGameStateUpdate()
     {
-        switch (CurrentState)
-        {
-            case GameState.PlayerTurn:
-                if (player.useActionPoints && player.currentActionPoints <= 0)
-                {
-                    EndPlayerTurn();
-                }
-                break;
+        if (CurrentState == GameState.PlayerTurn && player.useActionPoints && player.currentActionPoints <= 0)
+            EndPlayerTurn();
+    }
 
-            case GameState.EnemyTurn:
-                // Enemy logic is handled within the enemy's script
-                break;
-
-            // Additional cases can be added later
-            case GameState.Start:
-            case GameState.End:
-            case GameState.Paused:
-                break;
-        }
+    private void UpdateReferences()
+    {
+        player = FindObjectOfType<PlayerStats>();
+        enemy = FindObjectOfType<NewEnemyPathfinding>();
+        item = FindObjectOfType<NewUseItem>();
+        activationController = FindObjectOfType<ActivationController>();
     }
 
     public void StartPlayerTurn()
     {
         Debug.Log("PlayerTurn");
         CurrentState = GameState.PlayerTurn;
-        //player.enabled = true;
+        HandleActionPoints();
+        HandleCloakTurns();
+        HandleShieldTurns();
+    }
+
+    private void HandleActionPoints()
+    {
         if (player.useActionPoints)
         {
             inGameMenu.ActivateSkipButton();
             player.currentActionPoints = player.maxActionPoints;
         }
+    }
 
-        // Cloack Turns
+    private void HandleCloakTurns()
+    {
         if (item.currentCloackTurns > 0)
         {
-            item.currentCloackTurns --;
+            item.currentCloackTurns--;
             if (item.currentCloackTurns == 0)
             {
                 enemy.enabled = true;
                 Debug.Log("Cloack is Down, Enemy can spot you!");
             }
         }
+    }
 
-        // Shield Turns
+    private void HandleShieldTurns()
+    {
         if (item.currentShieldTurns > 0)
         {
             item.currentShieldTurns--;
@@ -126,18 +121,17 @@ public class GameStateManager : MonoBehaviour
                 Debug.Log("Shield Down, Enemy can attack you!");
             }
         }
-
     }
 
     public void EndPlayerTurn()
     {
         inGameMenu.DeactivateSkipButton();
         player.ConsumeFuel(1);
-        if (!isEnemyActivated)
+        if (!isEnemyActivated && !activationController.scriptComponent.enabled)
         {
             StartPlayerTurn();
         }
-        else 
+        else
         {
             StartEnemyTurn();
         }
@@ -152,22 +146,21 @@ public class GameStateManager : MonoBehaviour
             return;
         }
 
-        if (enemy && enemy.gameObject.activeInHierarchy)
+        if (IsEnemyActive())
         {
             CurrentState = GameState.EnemyTurn;
-            enemy.shouldFollowPlayer = true; // This will make the enemy calculate the path and start following the player
+            enemy.shouldFollowPlayer = true;
         }
         else
         {
-            EndEnemyTurn();  // If enemy is not there, then end the enemy's turn.
+            EndEnemyTurn();
         }
     }
 
+    private bool IsEnemyActive() => enemy && enemy.gameObject.activeInHierarchy;
+
     public void EndEnemyTurn()
     {
-        if (enemy)
-        {
-            StartPlayerTurn(); // Start the player's turn again
-        }
+        if (enemy) StartPlayerTurn();
     }
 }

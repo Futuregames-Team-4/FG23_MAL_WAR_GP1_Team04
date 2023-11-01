@@ -10,6 +10,7 @@ public class FuelConsumption : MonoBehaviour
     private RectTransform fuelLeft;
 
     private PlayerStats playerStats;
+    public SFXSelector sfxSelector;
 
     private void Start()
     {
@@ -61,6 +62,8 @@ public class FuelConsumption : MonoBehaviour
 
     public void HitByEnemy()
     {
+        sfxSelector.PlayLoseFuel();
+
         playerStats.ConsumeFuel(3);
     }
 }

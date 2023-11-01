@@ -10,6 +10,7 @@ public class NewUseItem : MonoBehaviour
     [SerializeField] GameObject cloack;
     [SerializeField] GameObject reveal;
     [SerializeField] InGameMenu inGameMenu;
+    [SerializeField] SFXSelector sfxSelector;
     public EnemyAttack enemyAttack;
     public NewEnemyPathfinding enemy;
     PlayerStats player;
@@ -28,6 +29,7 @@ public class NewUseItem : MonoBehaviour
     {
         if (player.currentActionPoints > 0)
         {
+            sfxSelector.PlayUseItem();
             player.Refuel(player.amountToRefill);
             inGameMenu.EndBattle();
             fuel.SetActive(false);
@@ -41,6 +43,8 @@ public class NewUseItem : MonoBehaviour
     {
         if (player.currentActionPoints > 0)
         {
+            sfxSelector.PlayUseItem();
+
             StartCoroutine(DelayAction());
             inGameMenu.EndBattle();
             flare.SetActive(false);
@@ -55,6 +59,8 @@ public class NewUseItem : MonoBehaviour
     {
         if (player.currentActionPoints > 0)
         {
+            sfxSelector.PlayUseItem();
+
             Debug.Log("Shield has been Activated");
             currentShieldTurns = shieldTurns;
             inGameMenu.EndBattle();
@@ -72,6 +78,8 @@ public class NewUseItem : MonoBehaviour
     {
         if (player.currentActionPoints > 0)
         {
+            sfxSelector.PlayUseItem();
+
             Debug.Log("Cloack Activated");
             currentCloackTurns = cloackTurns;
 
@@ -86,6 +94,8 @@ public class NewUseItem : MonoBehaviour
     }
     public void Key()
     {
+        sfxSelector.PlayUseItem();
+
         hasKey = true;
     }
 

@@ -20,7 +20,6 @@ public class NewEnemyPathfinding : MonoBehaviour
     {
         if (shouldFollowPlayer)
         {
-            Debug.Log("Posso muovermi");
             FindPathToPlayer(player.CurrentGridPosition);
             shouldFollowPlayer = false;
         }
@@ -29,7 +28,6 @@ public class NewEnemyPathfinding : MonoBehaviour
 
     public void FindPathToPlayer(Vector2Int playerPos)
     {
-        Debug.Log("Comincio la funzione");
         HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
 
         this.playerPos = playerPos;
@@ -43,7 +41,6 @@ public class NewEnemyPathfinding : MonoBehaviour
             Vector2Int current = queue.Dequeue();
             if (current == startPos)
             {
-                Debug.Log("OK");
                 CreatePath(cameFrom);
                 return;
             }
@@ -105,7 +102,6 @@ public class NewEnemyPathfinding : MonoBehaviour
 
     private void CreatePath(Dictionary<Vector2Int, Vector2Int> cameFrom)
     {
-        Debug.Log("Sto trovando il path");
         Vector2Int current = gridSystem.GetGridPosition(transform.position);
         List<Vector2Int> reversedPath = new List<Vector2Int>();
 
@@ -120,7 +116,6 @@ public class NewEnemyPathfinding : MonoBehaviour
 
     IEnumerator FollowPath()
     {
-        Debug.Log("Path trovato, seguo il giocatore");
         int movesThisTurn = Mathf.Min(path.Count, enemyMoves+1); // Limit the moves to either the path length or enemyMoves, +1 because so it works.
 
         for (int i = 0; i < movesThisTurn; i++)
