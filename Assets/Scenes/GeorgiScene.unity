@@ -3341,6 +3341,18 @@ PrefabInstance:
       propertyPath: enemyAttack
       value: 
       objectReference: {fileID: 1461005185}
+    - target: {fileID: 564673852090248617, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1854444285303647269, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1854444285303647269, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -161.2
+      objectReference: {fileID: 0}
     - target: {fileID: 4101190256182839574, guid: 1f81dedd9d7d1e645a1857f9d340a572, type: 3}
       propertyPath: m_Name
       value: Player
@@ -13725,7 +13737,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376a8a099d2b04a418db6957777eefea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransform: {fileID: 193285792}
 --- !u!4 &1124745306 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4482056806954026683, guid: 29c570431e1d49145b336b1a71a666ff, type: 3}
@@ -18735,6 +18746,8 @@ MonoBehaviour:
   enemy: {fileID: 0}
   item: {fileID: 0}
   inGameMenu: {fileID: 0}
+  activationController: {fileID: 0}
+  isEnemyVisible: 1
 --- !u!4 &1615032311
 Transform:
   m_ObjectHideFlags: 0
@@ -21159,6 +21172,8 @@ MonoBehaviour:
   battleScene: {fileID: 0}
   fuelConsumption: {fileID: 0}
   inventory: {fileID: 0}
+  playerStats: {fileID: 0}
+  musicSelector: {fileID: 0}
 --- !u!1 &1800033372
 GameObject:
   m_ObjectHideFlags: 0
@@ -22835,6 +22850,8 @@ MonoBehaviour:
   enemy: {fileID: 1686517951}
   item: {fileID: 0}
   inGameMenu: {fileID: 0}
+  activationController: {fileID: 0}
+  isEnemyVisible: 1
 --- !u!4 &1924655618
 Transform:
   m_ObjectHideFlags: 0
@@ -24699,6 +24716,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LargeTileMap (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4065929229824685871, guid: 8aecba7158a156d47850b6361c65ce2c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5816537215006792517, guid: 8aecba7158a156d47850b6361c65ce2c, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -26526,6 +26547,7 @@ SceneRoots:
   - {fileID: 1923214002}
   - {fileID: 1821310469}
   - {fileID: 1091569729}
+  - {fileID: 1335058584}
   - {fileID: 183591189801910611}
   - {fileID: 5289897337952658313}
   - {fileID: 8776615388189697491}
@@ -26542,6 +26564,5 @@ SceneRoots:
   - {fileID: 648997408}
   - {fileID: 1800033373}
   - {fileID: 1407216670}
-  - {fileID: 1335058584}
   - {fileID: 768668698}
   - {fileID: 1124683465}

@@ -2,10 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DebugTools;
 
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using DebugTools;
-
 public class GameStateManager : MonoBehaviour
 {
     public enum GameState
@@ -20,7 +16,6 @@ public class GameStateManager : MonoBehaviour
     public static GameStateManager Instance;
 
     public GameState CurrentState { get; private set; } = GameState.Start;
-
     public PlayerStats player;
     public NewEnemyPathfinding enemy;
     public NewUseItem item;
@@ -73,14 +68,22 @@ public class GameStateManager : MonoBehaviour
 
     private void UpdateReferences()
     {
-        player = FindObjectOfType<PlayerStats>();
-        enemy = FindObjectOfType<NewEnemyPathfinding>();
-        item = FindObjectOfType<NewUseItem>();
-        activationController = FindObjectOfType<ActivationController>();
+        if (CurrentState == GameState.PlayerTurn || CurrentState == GameState.EnemyTurn)
+        {
+            player = FindObjectOfType<PlayerStats>();
+            enemy = FindObjectOfType<NewEnemyPathfinding>();
+            item = FindObjectOfType<NewUseItem>();
+            activationController = FindObjectOfType<ActivationController>();
+        }
     }
 
     public void StartPlayerTurn()
     {
+        if (CurrentState == GameState.Start)
+        {
+            UpdateReferences(); // Aggiorna le istanze quando si passa dallo stato Start.
+        }
+
         Debug.Log("PlayerTurn");
         CurrentState = GameState.PlayerTurn;
         HandleActionPoints();
@@ -162,5 +165,13 @@ public class GameStateManager : MonoBehaviour
     public void EndEnemyTurn()
     {
         if (enemy) StartPlayerTurn();
+    }
+
+    public void RestartGameState() {
+        CurrentState = GameState.Start;
+    }
+
+    public void SetGameOverState() {
+        CurrentState = GameState.End;
     }
 }

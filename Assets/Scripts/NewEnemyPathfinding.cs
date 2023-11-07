@@ -142,38 +142,38 @@ public class NewEnemyPathfinding : MonoBehaviour
                 yield return null;
             }
             yield return new WaitForSeconds(0.5f); // puoi cambiare la durata dell'attesa per far muovere il nemico più velocemente o lentamente
-            TryAttackPlayer();
+            //TryAttackPlayer();
         }
         GameStateManager.Instance.EndEnemyTurn();
     }
 
-    private void TryAttackPlayer()
-    {
-        int rayCount = 8;
-        float spreadAngle = 360.0f;
-        float attackRange = 2.0f;
-        int playerLayerMask = 1 << LayerMask.NameToLayer("Box Collider");
+    //private void TryAttackPlayer()
+    //{
+    //    int rayCount = 8;
+    //    float spreadAngle = 360.0f;
+    //    float attackRange = 2.0f;
+    //    int playerLayerMask = 1 << LayerMask.NameToLayer("Box Collider");
 
-        for (int i = 0; i < rayCount; i++)
-        {
-            float angle = (i / (float)rayCount) * spreadAngle - (spreadAngle / 2.0f);
-            Vector3 rayDirection = Quaternion.Euler(0, angle, 0) * transform.forward;
+    //    for (int i = 0; i < rayCount; i++)
+    //    {
+    //        float angle = (i / (float)rayCount) * spreadAngle - (spreadAngle / 2.0f);
+    //        Vector3 rayDirection = Quaternion.Euler(0, angle, 0) * transform.forward;
 
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, rayDirection, out hit, attackRange, playerLayerMask))
-            {
-                if (hit.collider.CompareTag("Player"))
-                {
-                    EnemyAttack enemyAttackComponent = GetComponent<EnemyAttack>();
-                    if (enemyAttackComponent != null)
-                    {
-                        enemyAttackComponent.AttackPlayer(hit.collider);
-                    }
-                    return; // Esce dal ciclo, dato che vogliamo attaccare solo una volta.
-                }
-            }
-        }
-    }
+    //        RaycastHit hit;
+    //        if (Physics.Raycast(transform.position, rayDirection, out hit, attackRange, playerLayerMask))
+    //        {
+    //            if (hit.collider.CompareTag("Player"))
+    //            {
+    //                EnemyAttack enemyAttackComponent = GetComponent<EnemyAttack>();
+    //                if (enemyAttackComponent != null)
+    //                {
+    //                    enemyAttackComponent.AttackPlayer(hit.collider);
+    //                }
+    //                return; // Esce dal ciclo, dato che vogliamo attaccare solo una volta.
+    //            }
+    //        }
+    //    }
+    //}
 
 
 }

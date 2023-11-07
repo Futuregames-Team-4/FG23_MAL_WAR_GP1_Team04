@@ -28,7 +28,7 @@ public class MainMenuNavigation : MonoBehaviour
     public void StartGame()
     {
         Debug.Log("Starting game");
-        SceneManager.LoadScene("GeorgiScene");
+        SceneManager.LoadScene("Intro Scene");
         gameStateManager.StartPlayerTurn();
     }
 

@@ -9,6 +9,8 @@ public class FuelConsumption : MonoBehaviour
     [SerializeField]
     private RectTransform fuelLeft;
 
+    //public Sprite[] fuelSprites;
+
     private PlayerStats playerStats;
     public SFXSelector sfxSelector;
 

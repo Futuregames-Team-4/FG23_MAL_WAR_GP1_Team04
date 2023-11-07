@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -51,6 +52,7 @@ public class InGameMenu : MonoBehaviour
     [SerializeField]
     MusicSelector musicSelector;
 
+    //public Sprite[] fuelSprites;
 
     bool isPaused = false;
 
@@ -70,6 +72,16 @@ public class InGameMenu : MonoBehaviour
 
     private void Update()
     {
+
+        //int fuelLevel = playerStats.fuel;
+
+        //switch (playerStats.fuel)
+        //{
+        //    case 0: fuelSprites.ElementAt(0);
+        //            break;
+        //        case1: fuelSprites.ElementAt(1);
+        //}
+
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -114,6 +126,7 @@ public class InGameMenu : MonoBehaviour
 
     void ToggleOverviewMap()
     {
+        inventory.SetActive(false);
         overviewCamera.SetActive(true);
         mapOverview.SetActive(true);
         mainCamera.SetActive(false);
@@ -122,6 +135,7 @@ public class InGameMenu : MonoBehaviour
 
     void RemoveOverviewMap()
     {
+        inventory.SetActive(true);
         overviewCamera.SetActive(false);
         mapOverview.SetActive(false);
         mainCamera.SetActive(true);
@@ -157,6 +171,7 @@ public class InGameMenu : MonoBehaviour
 
     public void StartBattle()
     {
+        playerMovement.enabled = false;
         musicSelector.PlayBattleMusic();
         battleScene.SetActive(true);
         //inventory.transform.localPosition = new Vector3(0f, 400f, 0f);
@@ -172,9 +187,9 @@ public class InGameMenu : MonoBehaviour
 
     public void EndBattle()
     {
-        musicSelector.PlayInGameMusic();
         if (!playerMovement.enabled)
         {
+            musicSelector.PlayInGameMusic();
             playerMovement.enabled = true;
         }
         battleScene.SetActive(false);

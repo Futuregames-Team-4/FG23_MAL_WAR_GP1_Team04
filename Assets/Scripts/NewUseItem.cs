@@ -31,7 +31,7 @@ public class NewUseItem : MonoBehaviour
         {
             sfxSelector.PlayUseItem();
             player.Refuel(player.amountToRefill);
-            inGameMenu.EndBattle();
+            //inGameMenu.EndBattle();
             fuel.SetActive(false);
             player.ConsumeActionPoint();
         } else
@@ -44,10 +44,13 @@ public class NewUseItem : MonoBehaviour
         if (player.currentActionPoints > 0)
         {
             sfxSelector.PlayUseItem();
-
-            StartCoroutine(DelayAction());
             inGameMenu.EndBattle();
+
+            //StartCoroutine(DelayAction());
+            //inGameMenu.EndBattle();
             flare.SetActive(false);
+            player.ConsumeActionPoint();
+
         }
         else
         {
@@ -99,12 +102,12 @@ public class NewUseItem : MonoBehaviour
         hasKey = true;
     }
 
-    private IEnumerator DelayAction()
-    {
-        reveal.transform.position = new Vector3(-1.85000002f, 2.11999989f, -3.8900001f);
-        Debug.Log("Flash THE WORLD");
-        yield return new WaitForSeconds(3f);
-        reveal.transform.position = new Vector3(-100.5f, -0.150000036f, -6.25f);
-        Debug.Log("do something");
-    }
+    //private IEnumerator DelayAction()
+    //{
+    //    reveal.transform.position = new Vector3(-1.85000002f, 2.11999989f, -3.8900001f);
+    //    Debug.Log("Flash THE WORLD");
+    //    yield return new WaitForSeconds(3f);
+    //    reveal.transform.position = new Vector3(-100.5f, -0.150000036f, -6.25f);
+    //    Debug.Log("do something");
+    //}
 }
